@@ -35,7 +35,7 @@ require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
-  'github/copilot.vim',
+  'git@gitee.com:suyelu/copilot.vim',
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
 
