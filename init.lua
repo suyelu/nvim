@@ -214,6 +214,8 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 -- 高亮所在行
 vim.wo.cursorline = true
+-- 高亮所在列
+vim.wo.cursorcolumn = true
 -- 显示左侧图标指示列
 vim.wo.signcolumn = "yes"
 -- 右侧参考线，超过表示代码太长了，考虑换行
@@ -271,7 +273,7 @@ vim.wo.signcolumn = 'yes'
 -- Decrease update time
 vim.o.updatetime = 250
 vim.o.timeout = true
-vim.o.timeoutlen = 300
+vim.o.timeoutlen = 700
 -- split window 从下边和右边出现
 vim.o.splitbelow = true
 vim.o.splitright = true
@@ -336,7 +338,7 @@ map("n", "<C-Right>", ":vertical resize +2<CR>", opt)
 map("n", "<C-Down>", ":resize +2<CR>", opt)
 map("n", "<C-Up>", ":resize -2<CR>", opt)
 
-
+-- 大括号补全
 map("i", "{<CR>", "{<CR>}<ESC>O", opt)
 -- [[ lualine]]
 
@@ -692,5 +694,20 @@ null_ls.setup({
     end
   end,
 })
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+-- 让nvim回到上次关闭时的位置
+local group = vim.api.nvim_create_augroup("jump_last_position", { clear = true })
+vim.api.nvim_create_autocmd(
+  "BufReadPost",
+  {
+    callback = function()
+      local row, col = unpack(vim.api.nvim_buf_get_mark(0, "\""))
+      if { row, col } ~= { 0, 0 } then
+        vim.api.nvim_win_set_cursor(0, { row, 0 })
+      end
+    end,
+    group = group
+  }
+)
