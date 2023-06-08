@@ -13,7 +13,7 @@ if not vim.loop.fs_stat(lazypath) then
     'git',
     'clone',
     '--filter=blob:none',
-    'https://gitee.com/suyelu/lazy.nvim.git',
+    'https://github.com/folke/lazy.nvim.git',
     '--branch=stable', -- latest stable release
     lazypath,
   }
@@ -35,7 +35,7 @@ require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
-  'https://gitee.com/suyelu/copilot.vim',
+  'https://gitee.com/suyelu/copilot.vim.git',
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
 
