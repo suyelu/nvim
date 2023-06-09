@@ -80,6 +80,16 @@ require('lazy').setup({
     string.format("%s/null-ls.nvim.git", base_url),
     dependencies = { string.format('%s/plenary.nvim', base_url) },
   },
+  ---  jump anywhere in a document ---
+  {
+    string.format("%s/hop.nvim", base_url),
+    branch = "v2",
+    keys = {
+      { '<leader>h', '<Cmd>HopWord<CR>',            mode = 'n', silent = true },
+      { '<leader>H', '<Cmd>HopLine<CR>',            mode = 'n', silent = true },
+      { '<leader>f', '<Cmd>HopWordCurrentLine<CR>', mode = 'n', silent = true },
+    },
+  },
   -- Useful plugin to show you pending keybinds.
   { string.format('%s/which-key.nvim', base_url), opts = {} },
   {
@@ -355,6 +365,12 @@ map("n", "<C-Up>", ":resize -2<CR>", opt)
 
 -- 大括号补全
 map("i", "{<CR>", "{<CR>}<ESC>O", opt)
+-- 圆括号补全
+--map("i", "(", "()", opt)
+
+
+require("hop").setup()
+
 -- [[ lualine]]
 
 require('lualine').setup({
@@ -562,7 +578,12 @@ local on_attach = function(_, bufnr)
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
-
+  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' },
+    { callback = vim.lsp.buf.document_highlight, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' },
+    { callback = vim.lsp.buf.clear_references, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' },
+    { callback = vim.lsp.buf.signature_help, buffer = bufnr })
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
@@ -575,7 +596,7 @@ end
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
-  -- clangd = {},
+  clangd = {},
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
@@ -588,7 +609,6 @@ local servers = {
     },
   },
 }
-
 -- Setup neovim lua configuration
 require('neodev').setup()
 
@@ -673,6 +693,7 @@ local formatting = null_ls.builtins.formatting
 null_ls.setup({
   debug = false,
   sources = {
+    null_ls.builtins.code_actions.gitsigns,
     -- Formatting ---------------------
     --  brew install shfmt
     formatting.shfmt,
