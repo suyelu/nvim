@@ -66,8 +66,11 @@ require('lazy').setup({
   {
     -- Autocompletion
     'https://gitee.com/suyelu/nvim-cmp',
-    dependencies = { string.format('%s/cmp-nvim-lsp', base_url), string.format('%s/LuaSnip', base_url),
+    dependencies = { string.format('%s/cmp-nvim-lsp', base_url),
+      string.format('%s/LuaSnip', base_url), {
       string.format('%s/cmp_luasnip', base_url),
+      build = "make install_jsregexp"
+    },
       string.format('%s/cmp-buffer', base_url),
       string.format('%s/cmp-path', base_url),
       string.format('%s/cmp-cmdline', base_url) },
