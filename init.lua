@@ -66,8 +66,11 @@ require('lazy').setup({
   {
     -- Autocompletion
     'https://gitee.com/suyelu/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' },
+    dependencies = { string.format('%s/cmp-nvim-lsp', base_url), string.format('%s/LuaSnip', base_url),
+      string.format('%s/cmp_luasnip', base_url),
+      string.format('%s/cmp-buffer', base_url),
+      string.format('%s/cmp-path', base_url),
+      string.format('%s/cmp-cmdline', base_url) },
   },
   {
     string.format("%s/null-ls.nvim.git", base_url),
@@ -106,16 +109,16 @@ require('lazy').setup({
 
   {
     -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
+    string.format('%s/lualine.nvim', base_url),
     -- See `:help lualine.txt`
     dependencies = {
-      'kyazdani42/nvim-web-devicons'
+      string.format('%s/nvim-web-devicons', base_url)
     },
   },
 
   {
     -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
+    string.format('%s/indent-blankline.nvim', base_url),
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
     opts = {
@@ -125,7 +128,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',                      opts = {} },
+  { string.format('%s/Comment.nvim', base_url),   opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -139,7 +142,7 @@ require('lazy').setup({
   -- Only load if `make` is available. Make sure you have the system
   -- requirements installed.
   {
-    'nvim-telescope/telescope-fzf-native.nvim',
+    string.format('%s/telescope-fzf-native.nvim', base_url),
     -- NOTE: If you are having trouble with this installation,
     --       refer to the README for telescope-fzf-native for more instructions.
     build = 'make',
@@ -152,28 +155,29 @@ require('lazy').setup({
     -- Highlight, edit, and navigate code
     string.format('%s/nvim-treesitter', base_url),
     dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
+      string.format('%s/nvim-treesitter-textobjects', base_url),
     },
     build = ":TSUpdate",
   },
   {
-    'kyazdani42/nvim-tree.lua',
+    string.format('%s/nvim-tree.lua', base_url),
     dependencies = {
-      'kyazdani42/nvim-web-devicons'
+      string.format('%s/nvim-web-devicons', base_url)
     }
   },
   {
-    'akinsho/bufferline.nvim',
+    string.format('%s/bufferline.nvim', base_url),
     dependencies = {
-      'kyazdani42/nvim-web-devicons', 'moll/vim-bbye'
+      string.format('%s/nvim-web-devicons', base_url),
+      string.format('%s/vim-bbye', base_url)
     },
   }, {
-  'arkav/lualine-lsp-progress',
+  string.format('%s/lualine-lsp-progress', base_url),
 },
   {
-    'glepnir/dashboard-nvim',
+    string.format('%s/dashboard-nvim', base_url),
   }, {
-  'ahmedkhalf/project.nvim',
+  string.format('%s/project.nvim', base_url)
 },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
