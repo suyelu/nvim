@@ -98,16 +98,16 @@ require('lazy').setup({
 
   {
     -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+    string.format('%s/onedark.nvim', base_url),
     priority = 1000,
     config = function()
       vim.cmd.colorscheme 'onedark'
     end,
   },
   {
-    'folke/tokyonight.nvim',
+    string.format('%s/tokyonight.nvim', base_url),
   }, {
-  'npxbr/gruvbox.nvim',
+  string.format('%s/gruvbox.nvim', base_url),
 },
 
   {
