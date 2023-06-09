@@ -31,51 +31,53 @@ vim.o.runtimepath = lazypath .. ',' .. vim.o.runtimepath
 --
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
+local base_url = "https://gitee.com/suyelu"
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
-  'https://gitee.com/suyelu/copilot.vim.git',
-  'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
+  ---'https://gitee.com/suyelu/copilot.vim.git',
+  string.format("%s/copilot.vim.git", base_url),
+  'https://gitee.com/suyelu/vim-fugitive',
+  'https://gitee.com/suyelu/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
+  'https://gitee.com/suyelu/vim-sleuth',
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
     -- LSP Configuration & Plugins
-    'neovim/nvim-lspconfig',
+    'https://gitee.com/suyelu/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim', config = true },
-      'williamboman/mason-lspconfig.nvim',
+      { 'https://gitee.com/suyelu/mason.nvim',  config = true },
+      'https://gitee.com/suyelu/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'https://gitee.com/suyelu/fidget.nvim', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
-      'folke/neodev.nvim',
+      'https://gitee.com/suyelu/neodev.nvim',
     },
   },
 
   {
     -- Autocompletion
-    'hrsh7th/nvim-cmp',
+    'https://gitee.com/suyelu/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' },
   },
   {
-    'jose-elias-alvarez/null-ls.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    string.format("%s/null-ls.nvim.git", base_url),
+    dependencies = { string.format('%s/plenary.nvim', base_url) },
   },
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',          opts = {} },
+  { string.format('%s/which-key.nvim', base_url), opts = {} },
   {
     -- Adds git releated signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
+    string.format('%s/gitsigns.nvim', base_url),
     opts = {
       -- See `:help gitsigns.txt`
       signs = {
@@ -123,10 +125,15 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',         opts = {} },
+  { 'numToStr/Comment.nvim',                      opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
+  {
+    string.format('%s/telescope.nvim', base_url),
+    version = '*',
+    dependencies = {
+      string.format('%s/plenary.nvim', base_url) }
+  },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
   -- Only load if `make` is available. Make sure you have the system
@@ -143,7 +150,7 @@ require('lazy').setup({
 
   {
     -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
+    string.format('%s/nvim-treesitter', base_url),
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
     },
