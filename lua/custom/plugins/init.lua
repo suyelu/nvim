@@ -145,10 +145,10 @@ pluginKeys.nvimTreeList = {
 
 local list_keys = pluginKeys.nvimTreeList
 require("nvim-tree").setup({
-  -- 不显示 git 状态图标
+  -- 显示 git 状态图标
   on_attach = on_attach,
   git = {
-    enable = false,
+    enable = true,
   },
   -- project plugin 需要这样设置
   update_cwd = true,
@@ -213,7 +213,7 @@ require('bufferline').setup({
         text_align = "left",
       },
     },
-    -- 使用 nvim 内置 LSP  后续课程会配置
+    -- 使用 nvim 内置 LSP
     diagnostics = "nvim_lsp",
     -- 可选，显示 LSP 报错图标
     ---@diagnostic disable-next-line: unused-local
