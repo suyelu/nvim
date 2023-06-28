@@ -246,13 +246,13 @@ vim.wo.signcolumn = "yes"
 -- 右侧参考线，超过表示代码太长了，考虑换行
 vim.wo.colorcolumn = "80"
 -- 缩进2个空格等于一个Tab
-vim.o.tabstop = 2
-vim.bo.tabstop = 2
-vim.o.softtabstop = 2
+vim.o.tabstop = 4
+vim.bo.tabstop = 4
+vim.o.softtabstop = 4
 vim.o.shiftround = true
 -- >> << 时移动长度
-vim.o.shiftwidth = 2
-vim.bo.shiftwidth = 2
+vim.o.shiftwidth = 4
+vim.bo.shiftwidth = 4
 -- 空格替代tab
 vim.o.expandtab = true
 vim.bo.expandtab = true
@@ -318,7 +318,7 @@ vim.o.shortmess = vim.o.shortmess .. 'c'
 -- 补全最多显示10行
 vim.o.pumheight = 10
 -- 永远显示 tabline
-vim.o.showtabline = 2
+vim.o.showtabline = 4 --存疑
 -- 使用增强状态栏插件后不再需要 vim 的模式提示
 vim.o.showmode = false
 -- [[ Basic Keymaps ]]
@@ -364,10 +364,9 @@ map("n", "<C-Down>", ":resize +2<CR>", opt)
 map("n", "<C-Up>", ":resize -2<CR>", opt)
 
 -- 大括号补全
-map("i", "{<CR>", "{<CR>}<ESC>O", opt)
+map("i", "{<CR>", "{<CR>}<ESC>O<TAB>", opt)
 -- 圆括号补全
 --map("i", "(", "()", opt)
-
 
 require("hop").setup()
 
@@ -463,7 +462,7 @@ require('nvim-treesitter.configs').setup {
   ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-  auto_install = false,
+  auto_install = true,
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
