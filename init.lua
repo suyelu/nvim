@@ -19,7 +19,6 @@ if not vim.loop.fs_stat(lazypath) then
   }
 end
 
-
 --vim.opt.rtp:prepend(lazypath)
 vim.o.runtimepath = lazypath .. ',' .. vim.o.runtimepath
 --print(vim.o.runtimepatih)
@@ -31,13 +30,13 @@ vim.o.runtimepath = lazypath .. ',' .. vim.o.runtimepath
 --
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
-local base_url = "https://gitee.com/suyelu"
+local base_url = 'https://gitee.com/suyelu'
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
   ---'https://gitee.com/suyelu/copilot.vim.git',
-  string.format("%s/copilot.vim.git", base_url),
+  string.format('%s/copilot.vim.git', base_url),
   'https://gitee.com/suyelu/vim-fugitive',
   'https://gitee.com/suyelu/vim-rhubarb',
 
@@ -51,7 +50,7 @@ require('lazy').setup({
     'https://gitee.com/suyelu/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'https://gitee.com/suyelu/mason.nvim',  config = true },
+      { 'https://gitee.com/suyelu/mason.nvim', config = true },
       'https://gitee.com/suyelu/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
@@ -66,27 +65,29 @@ require('lazy').setup({
   {
     -- Autocompletion
     'https://gitee.com/suyelu/nvim-cmp',
-    dependencies = { string.format('%s/cmp-nvim-lsp', base_url),
+    dependencies = {
+      string.format('%s/cmp-nvim-lsp', base_url),
       {
         string.format('%s/LuaSnip', base_url),
-        build = "make install_jsregexp"
+        build = 'make install_jsregexp',
       },
       string.format('%s/cmp_luasnip', base_url),
       string.format('%s/cmp-buffer', base_url),
       string.format('%s/cmp-path', base_url),
-      string.format('%s/cmp-cmdline', base_url) },
+      string.format('%s/cmp-cmdline', base_url),
+    },
   },
   {
-    string.format("%s/null-ls.nvim.git", base_url),
+    string.format('%s/null-ls.nvim.git', base_url),
     dependencies = { string.format('%s/plenary.nvim', base_url) },
   },
   ---  jump anywhere in a document ---
   {
-    string.format("%s/hop.nvim", base_url),
-    branch = "v2",
+    string.format('%s/hop.nvim', base_url),
+    branch = 'v2',
     keys = {
-      { '<leader>h', '<Cmd>HopWord<CR>',            mode = 'n', silent = true },
-      { '<leader>H', '<Cmd>HopLine<CR>',            mode = 'n', silent = true },
+      { '<leader>h', '<Cmd>HopWord<CR>', mode = 'n', silent = true },
+      { '<leader>H', '<Cmd>HopLine<CR>', mode = 'n', silent = true },
       { '<leader>f', '<Cmd>HopWordCurrentLine<CR>', mode = 'n', silent = true },
     },
   },
@@ -117,16 +118,17 @@ require('lazy').setup({
   },
   {
     string.format('%s/tokyonight.nvim', base_url),
-  }, {
-  string.format('%s/gruvbox.nvim', base_url),
-},
+  },
+  {
+    string.format('%s/gruvbox.nvim', base_url),
+  },
 
   {
     -- Set lualine as statusline
     string.format('%s/lualine.nvim', base_url),
     -- See `:help lualine.txt`
     dependencies = {
-      string.format('%s/nvim-web-devicons', base_url)
+      string.format('%s/nvim-web-devicons', base_url),
     },
   },
 
@@ -142,14 +144,15 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { string.format('%s/Comment.nvim', base_url),   opts = {} },
+  { string.format('%s/Comment.nvim', base_url), opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
     string.format('%s/telescope.nvim', base_url),
     version = '*',
     dependencies = {
-      string.format('%s/plenary.nvim', base_url) }
+      string.format('%s/plenary.nvim', base_url),
+    },
   },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -171,28 +174,30 @@ require('lazy').setup({
     dependencies = {
       string.format('%s/nvim-treesitter-textobjects', base_url),
     },
-    build = ":TSUpdate",
+    build = ':TSUpdate',
   },
   {
     string.format('%s/nvim-tree.lua', base_url),
     dependencies = {
-      string.format('%s/nvim-web-devicons', base_url)
-    }
+      string.format('%s/nvim-web-devicons', base_url),
+    },
   },
   {
     string.format('%s/bufferline.nvim', base_url),
     dependencies = {
       string.format('%s/nvim-web-devicons', base_url),
-      string.format('%s/vim-bbye', base_url)
+      string.format('%s/vim-bbye', base_url),
     },
-  }, {
-  string.format('%s/lualine-lsp-progress', base_url),
-},
+  },
+  {
+    string.format('%s/lualine-lsp-progress', base_url),
+  },
   {
     string.format('%s/dashboard-nvim', base_url),
-  }, {
-  string.format('%s/project.nvim', base_url)
-},
+  },
+  {
+    string.format('%s/project.nvim', base_url),
+  },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -211,8 +216,6 @@ require('lazy').setup({
   { import = 'custom.plugins' },
 }, {})
 
-
-
 -- [[ Setting options ]]
 -- See `:help vim.o`
 
@@ -229,7 +232,7 @@ vim.o.cmdheight = 2
 -- 当文件被外部程序修改时，自动加载
 vim.o.autoread = true
 vim.bo.autoread = true
-vim.g.encoding = "UTF-8"
+vim.g.encoding = 'UTF-8'
 --vim.o.fileencoding = 'utf-8'
 -- jkhl 移动时光标周围保留8行
 vim.o.scrolloff = 8
@@ -242,9 +245,9 @@ vim.wo.cursorline = true
 -- 高亮所在列
 vim.wo.cursorcolumn = true
 -- 显示左侧图标指示列
-vim.wo.signcolumn = "yes"
+vim.wo.signcolumn = 'yes'
 -- 右侧参考线，超过表示代码太长了，考虑换行
-vim.wo.colorcolumn = "80"
+vim.wo.colorcolumn = '80'
 -- 缩进2个空格等于一个Tab
 vim.o.tabstop = 4
 vim.bo.tabstop = 4
@@ -263,7 +266,6 @@ vim.o.smartindent = true
 -- 搜索大小写不敏感，除非包含大写
 vim.o.ignorecase = true
 vim.o.smartcase = true
-
 
 -- 禁止折行
 vim.wo.wrap = false
@@ -309,7 +311,7 @@ vim.o.completeopt = 'menu,menuone,noselect,noinsert'
 vim.o.termguicolors = true
 -- 不可见字符的显示，这里只把空格显示为一个点
 vim.o.list = true
-vim.o.listchars = "space:·"
+vim.o.listchars = 'space:·'
 
 -- 补全增强
 vim.o.wildmenu = true
@@ -333,65 +335,64 @@ local map = vim.api.nvim_set_keymap
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
 
-
 -- Terminal相关
-map("n", "<leader>t", ":sp | terminal<CR>", opt)
-map("n", "<leader>vt", ":vsp | terminal<CR>", opt)
-map("t", "<Esc>", "<C-\\><C-n>", opt)
-map("t", "<A-h>", [[ <C-\><C-N><C-w>h ]], opt)
-map("t", "<A-j>", [[ <C-\><C-N><C-w>j ]], opt)
-map("t", "<A-k>", [[ <C-\><C-N><C-w>k ]], opt)
-map("t", "<A-l>", [[ <C-\><C-N><C-w>l ]], opt)
+map('n', '<leader>t', ':sp | terminal<CR>', opt)
+map('n', '<leader>vt', ':vsp | terminal<CR>', opt)
+map('t', '<Esc>', '<C-\\><C-n>', opt)
+map('t', '<A-h>', [[ <C-\><C-N><C-w>h ]], opt)
+map('t', '<A-j>', [[ <C-\><C-N><C-w>j ]], opt)
+map('t', '<A-k>', [[ <C-\><C-N><C-w>k ]], opt)
+map('t', '<A-l>', [[ <C-\><C-N><C-w>l ]], opt)
 
 -- visual模式下缩进代码
-map("v", "<", "<gv", opt)
-map("v", ">", ">gv", opt)
+map('v', '<', '<gv', opt)
+map('v', '>', '>gv', opt)
 -- 上下移动选中文本
-map("v", "J", ":move '>+1<CR>gv-gv", opt)
-map("v", "K", ":move '<-2<CR>gv-gv", opt)
+map('v', 'J', ":move '>+1<CR>gv-gv", opt)
+map('v', 'K', ":move '<-2<CR>gv-gv", opt)
 
 -- Alt + hjkl  窗口之间跳转
-map("n", "<A-h>", "<C-w>h", opt)
-map("n", "<A-j>", "<C-w>j", opt)
-map("n", "<A-k>", "<C-w>k", opt)
-map("n", "<A-l>", "<C-w>l", opt)
+map('n', '<A-h>', '<C-w>h', opt)
+map('n', '<A-j>', '<C-w>j', opt)
+map('n', '<A-k>', '<C-w>k', opt)
+map('n', '<A-l>', '<C-w>l', opt)
 
 -- 左右比例控制
-map("n", "<C-Left>", ":vertical resize -2<CR>", opt)
-map("n", "<C-Right>", ":vertical resize +2<CR>", opt)
+map('n', '<C-Left>', ':vertical resize -2<CR>', opt)
+map('n', '<C-Right>', ':vertical resize +2<CR>', opt)
 -- 上下比例
-map("n", "<C-Down>", ":resize +2<CR>", opt)
-map("n", "<C-Up>", ":resize -2<CR>", opt)
+map('n', '<C-Down>', ':resize +2<CR>', opt)
+map('n', '<C-Up>', ':resize -2<CR>', opt)
 
 -- 大括号补全
-map("i", "{<CR>", "{<CR>}<ESC>O<TAB>", opt)
+map('i', '{<CR>', '{<CR>}<ESC>O', opt)
 -- 圆括号补全
 --map("i", "(", "()", opt)
 
-require("hop").setup()
+require('hop').setup()
 
 -- [[ lualine]]
 
-require('lualine').setup({
+require('lualine').setup {
   options = {
-    theme = "tokyonight",
-    component_separators = { left = "|", right = "|" },
+    theme = 'tokyonight',
+    component_separators = { left = '|', right = '|' },
     -- https://github.com/ryanoasis/powerline-extra-symbols
-    section_separators = { left = " ", right = "" },
+    section_separators = { left = ' ', right = '' },
   },
-  extensions = { "nvim-tree", "toggleterm" },
+  extensions = { 'nvim-tree', 'toggleterm' },
   sections = {
     lualine_c = {
-      "filename",
+      'filename',
       {
-        "lsp_progress",
-        spinner_symbols = { " ", " ", " ", " ", " ", " " },
+        'lsp_progress',
+        spinner_symbols = { ' ', ' ', ' ', ' ', ' ', ' ' },
       },
     },
     lualine_x = {
-      "filesize",
+      'filesize',
       {
-        "fileformat",
+        'fileformat',
         symbols = {
           unix = '', -- e712
           dos = '', -- e70f
@@ -403,13 +404,11 @@ require('lualine').setup({
         --  mac = "CR",
         -- },
       },
-      "encoding",
-      "filetype",
+      'encoding',
+      'filetype',
     },
   },
-})
-
-
+}
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -522,20 +521,20 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
-vim.diagnostic.config({
+vim.diagnostic.config {
   virtual_text = true,
   signs = true,
   -- 在输入模式下也更新提示，设置为 true 也许会影响性能
   update_in_insert = false,
-})
-local signs = { Error = "", Warn = "", Hint = "", Info = " " }
+}
+local signs = { Error = '', Warn = '', Hint = '', Info = ' ' }
 for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
+  local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
@@ -577,12 +576,9 @@ local on_attach = function(_, bufnr)
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
-  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' },
-    { callback = vim.lsp.buf.document_highlight, buffer = bufnr })
-  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' },
-    { callback = vim.lsp.buf.clear_references, buffer = bufnr })
-  vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' },
-    { callback = vim.lsp.buf.signature_help, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, { callback = vim.lsp.buf.document_highlight, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, { callback = vim.lsp.buf.clear_references, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' }, { callback = vim.lsp.buf.signature_help, buffer = bufnr })
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
@@ -680,16 +676,15 @@ cmp.setup {
   },
 }
 
-
-local status, null_ls = pcall(require, "null-ls")
+local status, null_ls = pcall(require, 'null-ls')
 if not status then
-  vim.notify("没有找到 null-ls")
+  vim.notify '没有找到 null-ls'
   return
 end
 
 local formatting = null_ls.builtins.formatting
 
-null_ls.setup({
+null_ls.setup {
   debug = false,
   sources = {
     null_ls.builtins.code_actions.gitsigns,
@@ -699,60 +694,55 @@ null_ls.setup({
     -- StyLua
     formatting.stylua,
     -- frontend
-    formatting.prettier.with({
+    formatting.prettier.with {
       -- 只比默认配置少了 markdown
       filetypes = {
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "vue",
-        "css",
-        "scss",
-        "less",
-        "html",
-        "json",
-        "yaml",
-        "graphql",
-        "c",
-        "cpp",
+        'javascript',
+        'javascriptreact',
+        'typescript',
+        'typescriptreact',
+        'vue',
+        'css',
+        'scss',
+        'less',
+        'html',
+        'json',
+        'yaml',
+        'graphql',
+        'c',
+        'cpp',
       },
-      prefer_local = "node_modules/.bin",
-    }),
+      prefer_local = 'node_modules/.bin',
+    },
     -- formatting.fixjson,
     -- formatting.black.with({ extra_args = { "--fast" } }),
   },
   -- 保存自动格式化
   on_attach = function(client)
     if client.server_capabilities.documentFormattingProvider then
-      vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.format()")
+      vim.cmd 'autocmd BufWritePre <buffer> lua vim.lsp.buf.format()'
     end
   end,
-})
+}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 -- 让nvim回到上次关闭时的位置
-local group = vim.api.nvim_create_augroup("jump_last_position", { clear = true })
-vim.api.nvim_create_autocmd(
-  "BufReadPost",
-  {
-    callback = function()
-      local row, col = unpack(vim.api.nvim_buf_get_mark(0, "\""))
-      if { row, col } ~= { 0, 0 } then
-        vim.api.nvim_win_set_cursor(0, { row, 0 })
-      end
-    end,
-    group = group
-  }
-)
-
-
+local group = vim.api.nvim_create_augroup('jump_last_position', { clear = true })
+vim.api.nvim_create_autocmd('BufReadPost', {
+  callback = function()
+    local row, col = unpack(vim.api.nvim_buf_get_mark(0, '"'))
+    if { row, col } ~= { 0, 0 } then
+      vim.api.nvim_win_set_cursor(0, { row, 0 })
+    end
+  end,
+  group = group,
+})
 
 -- 为源代码添加作者，邮箱，时间等信息
-vim.cmd([[
+vim.cmd [[
 autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.go exec ":call SetTitle()"
-"""定义函数SetTitle，自动插入文件头
+  """定义函数SetTitle，自动插入文件头
 func SetTitle()
     "如果文件类型为.sh文件
     if &filetype == 'sh'
@@ -766,20 +756,25 @@ func SetTitle()
         call append(line(".")+6, "")
     else
         call setline(1, "/* ************************************************************************")
-        call append(line("."),   "> File Name:     ".expand("%"))
-        call append(line(".")+1, "> Author:        suyelu")
-        call append(line(".")+2, "> mail:          suyelu@hotmail.com")
-        call append(line(".")+3, "> Created Time:  ".strftime("%c"))
-        call append(line(".")+4, "> Description:   ")
+        call append(line("."),   "    > File Name:     ".expand("%"))
+        call append(line(".")+1, "    > Author:        suyelu")
+        call append(line(".")+2, "    > mail:          suyelu@hotmail.com")
+        call append(line(".")+3, "    > Created Time:  ".strftime("%c"))
+        call append(line(".")+4, "    > Description:   ")
         call append(line(".")+5, " ************************************************************************/")
         call append(line(".")+6, "")
     endif
+    "如果文件为.c 文件，则插入 #include <stdio.h>这个头文件
+   if &filetype == 'c'
+     call append(line(".")+7, "#include <stdio.h>")
+     call append(line(".")+8, "")
+   endif
+endfunc
     "新建文件后，自动定位到文件末尾
     autocmd BufNewFile * normal G
-endfunc
-]])
+]]
 
-vim.cmd([[
+vim.cmd [[
 autocmd BufNewFile *.h,*.hpp exec ":call AddHHeader()"
 func AddHHeader()
     let macro = "_".toupper(substitute(expand("%"), "[/.]", "_", "g"))."_"
@@ -789,4 +784,5 @@ func AddHHeader()
     call setline(11, "")
     call setline(12, "#endif  // ".macro)
 endfunc
-]])
+  autocmd BufNewfile * normal 11G
+]]
