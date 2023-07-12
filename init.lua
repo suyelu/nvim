@@ -298,7 +298,7 @@ vim.o.swapfile = false
 -- Keep signcolumn on by default
 vim.wo.signcolumn = 'yes'
 -- Decrease update time
-vim.o.updatetime = 250
+vim.o.updatetime = 2500
 vim.o.timeout = true
 vim.o.timeoutlen = 700
 -- split window 从下边和右边出现
@@ -367,7 +367,7 @@ map('n', '<C-Up>', ':resize -2<CR>', opt)
 -- 大括号补全
 map('i', '{<CR>', '{<CR>}<ESC>O', opt)
 -- 圆括号补全
---map("i", "(", "()", opt)
+map("i", "(", "()<LEFT>", opt)
 
 require('hop').setup()
 
@@ -806,7 +806,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 
 -- 为源代码添加作者，邮箱，时间等信息
 vim.cmd [[
-autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.go exec ":call SetTitle()"
+autocmd BufNewFile *.cc,*.cpp,*.[ch],*.sh,*.java,*.go exec ":call SetTitle()"
   """定义函数SetTitle，自动插入文件头
 func SetTitle()
     "如果文件类型为.sh文件
@@ -833,7 +833,9 @@ func SetTitle()
    if &filetype == 'c'
      call append(line(".")+7, "#include <stdio.h>")
      call append(line(".")+8, "")
-   endif
+ if &filetype == "cc"
+     call append(line(".")+7, "#include <iostream>")
+     call append(line(".")+8, "using namespace std;")  endif
 endfunc
     "新建文件后，自动定位到文件末尾
     autocmd BufNewFile * normal G
