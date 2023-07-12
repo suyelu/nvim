@@ -50,7 +50,7 @@ require('lazy').setup({
     'https://gitee.com/suyelu/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'https://gitee.com/suyelu/mason.nvim', config = true },
+      { 'https://gitee.com/suyelu/mason.nvim',  config = true },
       'https://gitee.com/suyelu/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
@@ -86,8 +86,8 @@ require('lazy').setup({
     string.format('%s/hop.nvim', base_url),
     branch = 'v2',
     keys = {
-      { '<leader>h', '<Cmd>HopWord<CR>', mode = 'n', silent = true },
-      { '<leader>H', '<Cmd>HopLine<CR>', mode = 'n', silent = true },
+      { '<leader>h', '<Cmd>HopWord<CR>',            mode = 'n', silent = true },
+      { '<leader>H', '<Cmd>HopLine<CR>',            mode = 'n', silent = true },
       { '<leader>f', '<Cmd>HopWordCurrentLine<CR>', mode = 'n', silent = true },
     },
   },
@@ -144,7 +144,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { string.format('%s/Comment.nvim', base_url), opts = {} },
+  { string.format('%s/Comment.nvim', base_url),   opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -576,9 +576,12 @@ local on_attach = function(_, bufnr)
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
-  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, { callback = vim.lsp.buf.document_highlight, buffer = bufnr })
-  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, { callback = vim.lsp.buf.clear_references, buffer = bufnr })
-  vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' }, { callback = vim.lsp.buf.signature_help, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' },
+    { callback = vim.lsp.buf.document_highlight, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' },
+    { callback = vim.lsp.buf.clear_references, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' },
+    { callback = vim.lsp.buf.signature_help, buffer = bufnr })
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
@@ -591,7 +594,7 @@ end
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
-  -- clangd = {},
+  clangd = {},
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
@@ -620,11 +623,33 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
-    require('lspconfig')[server_name].setup {
+    local server_config = {
       capabilities = capabilities,
       on_attach = on_attach,
       settings = servers[server_name],
     }
+    -- 如果server_name为clangd,设置--offset-encoding=utf-16
+    if server_name == 'clangd' then
+      server_config.cmd = {
+        'clangd',
+        '--offset-encoding=utf-16',
+      }
+      server_config.init_options = {
+        clangdFileStatus = true,
+        usePlaceholders = true,
+        completeUnimported = true,
+        semanticHighlighting = true,
+        format = {
+          style = 'file',
+          fallbackStyle = 'Google',
+          columnLimit = 100,
+          tabWidth = 4,
+          indentWidth = 4,
+          SpacesInAngles = true,
+        },
+      }
+    end
+    require('lspconfig')[server_name].setup(server_config)
   end,
 }
 
@@ -669,12 +694,38 @@ cmp.setup {
   },
   sources = {
     { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-    { name = 'buffer' },
-    { name = 'path' },
-    { name = 'cmdline' },
+    -- { name = 'luasnip' },
+    --{ name = 'buffer' },
+    --{ name = 'path' },
+    --{ name = 'cmdline' },
   },
 }
+-- Set configuration for specific filetype.
+cmp.setup.filetype('gitcommit', {
+  sources = cmp.config.sources({
+    { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+  }, {
+    { name = 'buffer' },
+  }),
+})
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' },
+  },
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' },
+  }, {
+    { name = 'cmdline' },
+  }),
+})
 
 local status, null_ls = pcall(require, 'null-ls')
 if not status then
@@ -683,16 +734,25 @@ if not status then
 end
 
 local formatting = null_ls.builtins.formatting
-
+local function get_indentation(lang)
+  if lang == 'c' or lang == 'cpp' then
+    return 4 -- C 和 C++ 使用 4 个空格缩进
+  elseif lang == 'python' then
+    return 2 -- Python 使用 2 个空格缩进
+  else
+    return 2 -- 默认使用 2 个空格缩进
+  end
+end
+local indent = get_indentation('')
 null_ls.setup {
   debug = false,
   sources = {
     null_ls.builtins.code_actions.gitsigns,
     -- Formatting ---------------------
     --  brew install shfmt
-    formatting.shfmt,
+    --formatting.shfmt,
     -- StyLua
-    formatting.stylua,
+    --formatting.stylua,
     -- frontend
     formatting.prettier.with {
       -- 只比默认配置少了 markdown
@@ -713,14 +773,19 @@ null_ls.setup {
         'cpp',
       },
       prefer_local = 'node_modules/.bin',
+      args = { '--tab-width' .. indent },
     },
+
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.completion.spell,
     -- formatting.fixjson,
     -- formatting.black.with({ extra_args = { "--fast" } }),
   },
   -- 保存自动格式化
   on_attach = function(client)
+    client.offset_encoding = 'utf-16' -- 可能没有用
     if client.server_capabilities.documentFormattingProvider then
-      vim.cmd 'autocmd BufWritePre <buffer> lua vim.lsp.buf.format()'
+      --vim.cmd 'autocmd BufWritePre <buffer> lua vim.lsp.buf.format()'
     end
   end,
 }
