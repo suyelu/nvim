@@ -744,7 +744,7 @@ local function get_indentation(lang)
   elseif lang == 'python' then
     return 2 -- Python 使用 2 个空格缩进
   else
-    return 2 -- 默认使用 2 个空格缩进
+    return 8 -- 默认使用 2 个空格缩进
   end
 end
 local current_filetype = vim.bo.filetype
@@ -778,7 +778,7 @@ null_ls.setup {
         'cpp',
       },
       prefer_local = 'node_modules/.bin',
-      args = { '--tab-width', 4 },
+      args = { '--tab-width', 16 },
     },
 
     null_ls.builtins.diagnostics.eslint,
