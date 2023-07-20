@@ -836,6 +836,11 @@ func SetTitle()
  if &filetype == "cc"
      call append(line(".")+7, "#include <iostream>")
      call append(line(".")+8, "using namespace std;")  endif
+  endif
+ if &filetype == "cpp"
+     call append(line(".")+7, "#include <iostream>")
+     call append(line(".")+8, "using namespace std;")  endif
+  endif
 endfunc
     "新建文件后，自动定位到文件末尾
     autocmd BufNewFile * normal G
