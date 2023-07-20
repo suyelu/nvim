@@ -833,6 +833,7 @@ func SetTitle()
    if &filetype == 'c'
      call append(line(".")+7, "#include <stdio.h>")
      call append(line(".")+8, "")
+endif
  if &filetype == "cc"
      call append(line(".")+7, "#include <iostream>")
      call append(line(".")+8, "using namespace std;")  endif
