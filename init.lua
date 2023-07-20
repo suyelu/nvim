@@ -50,7 +50,7 @@ require('lazy').setup({
     'https://gitee.com/suyelu/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'https://gitee.com/suyelu/mason.nvim',  config = true },
+      { 'https://gitee.com/suyelu/mason.nvim', config = true },
       'https://gitee.com/suyelu/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
@@ -86,8 +86,8 @@ require('lazy').setup({
     string.format('%s/hop.nvim', base_url),
     branch = 'v2',
     keys = {
-      { '<leader>h', '<Cmd>HopWord<CR>',            mode = 'n', silent = true },
-      { '<leader>H', '<Cmd>HopLine<CR>',            mode = 'n', silent = true },
+      { '<leader>h', '<Cmd>HopWord<CR>', mode = 'n', silent = true },
+      { '<leader>H', '<Cmd>HopLine<CR>', mode = 'n', silent = true },
       { '<leader>f', '<Cmd>HopWordCurrentLine<CR>', mode = 'n', silent = true },
     },
   },
@@ -144,7 +144,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { string.format('%s/Comment.nvim', base_url),   opts = {} },
+  { string.format('%s/Comment.nvim', base_url), opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -367,7 +367,7 @@ map('n', '<C-Up>', ':resize -2<CR>', opt)
 -- 大括号补全
 map('i', '{<CR>', '{<CR>}<ESC>O', opt)
 -- 圆括号补全
-map("i", "(", "()<LEFT>", opt)
+map('i', '(', '()<LEFT>', opt)
 
 require('hop').setup()
 
@@ -576,12 +576,9 @@ local on_attach = function(_, bufnr)
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
-  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' },
-    { callback = vim.lsp.buf.document_highlight, buffer = bufnr })
-  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' },
-    { callback = vim.lsp.buf.clear_references, buffer = bufnr })
-  vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' },
-    { callback = vim.lsp.buf.signature_help, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, { callback = vim.lsp.buf.document_highlight, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, { callback = vim.lsp.buf.clear_references, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' }, { callback = vim.lsp.buf.signature_help, buffer = bufnr })
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
@@ -635,10 +632,12 @@ mason_lspconfig.setup_handlers {
         '--offset-encoding=utf-16',
       }
       server_config.init_options = {
+        filetypes = { 'c', 'cpp' },
         clangdFileStatus = true,
         usePlaceholders = true,
         completeUnimported = true,
         semanticHighlighting = true,
+        --root_dir = mason_lspconfig.util.root_pattern('compile_commands.json', 'compile_flags.txt', '.git'),
         format = {
           style = 'file',
           fallbackStyle = 'Google',
@@ -646,6 +645,11 @@ mason_lspconfig.setup_handlers {
           tabWidth = 4,
           indentWidth = 4,
           SpacesInAngles = true,
+        },
+        settings = {
+          Cpp = {
+            tabWidth = 4,
+          },
         },
       }
     end
@@ -743,16 +747,17 @@ local function get_indentation(lang)
     return 2 -- 默认使用 2 个空格缩进
   end
 end
-local indent = get_indentation('')
+local current_filetype = vim.bo.filetype
+local indent = get_indentation(current_filetype)
 null_ls.setup {
-  debug = false,
+  debug = true,
   sources = {
     null_ls.builtins.code_actions.gitsigns,
     -- Formatting ---------------------
     --  brew install shfmt
-    --formatting.shfmt,
+    formatting.shfmt,
     -- StyLua
-    --formatting.stylua,
+    formatting.stylua,
     -- frontend
     formatting.prettier.with {
       -- 只比默认配置少了 markdown
@@ -773,7 +778,7 @@ null_ls.setup {
         'cpp',
       },
       prefer_local = 'node_modules/.bin',
-      args = { '--tab-width' .. indent },
+      args = { '--tab-width', 4 },
     },
 
     null_ls.builtins.diagnostics.eslint,
@@ -785,11 +790,15 @@ null_ls.setup {
   on_attach = function(client)
     client.offset_encoding = 'utf-16' -- 可能没有用
     if client.server_capabilities.documentFormattingProvider then
-      --vim.cmd 'autocmd BufWritePre <buffer> lua vim.lsp.buf.format()'
+      local pos = vim.fn.getpos '.'
+      vim.cmd 'autocmd BufWritePre <buffer> lua vim.lsp.buf.format({async = false})'
+      vim.fn.setpos('.', pos)
     end
   end,
 }
-
+--
+-- 这里有bug，C语言格式化的时候，会将缩进设置为两个空格
+--
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 -- 让nvim回到上次关闭时的位置
