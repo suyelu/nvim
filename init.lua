@@ -50,12 +50,12 @@ require('lazy').setup({
     'https://gitee.com/suyelu/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'https://gitee.com/suyelu/mason.nvim', config = true },
+      { 'https://gitee.com/suyelu/mason.nvim',  config = true },
       'https://gitee.com/suyelu/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'https://gitee.com/suyelu/fidget.nvim', opts = {} },
+      { 'https://gitee.com/suyelu/fidget.nvim', tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'https://gitee.com/suyelu/neodev.nvim',
@@ -86,8 +86,8 @@ require('lazy').setup({
     string.format('%s/hop.nvim', base_url),
     branch = 'v2',
     keys = {
-      { '<leader>h', '<Cmd>HopWord<CR>', mode = 'n', silent = true },
-      { '<leader>H', '<Cmd>HopLine<CR>', mode = 'n', silent = true },
+      { '<leader>h', '<Cmd>HopWord<CR>',            mode = 'n', silent = true },
+      { '<leader>H', '<Cmd>HopLine<CR>',            mode = 'n', silent = true },
       { '<leader>f', '<Cmd>HopWordCurrentLine<CR>', mode = 'n', silent = true },
     },
   },
@@ -144,7 +144,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { string.format('%s/Comment.nvim', base_url), opts = {} },
+  { string.format('%s/Comment.nvim', base_url),   opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -576,9 +576,12 @@ local on_attach = function(_, bufnr)
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
-  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, { callback = vim.lsp.buf.document_highlight, buffer = bufnr })
-  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, { callback = vim.lsp.buf.clear_references, buffer = bufnr })
-  vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' }, { callback = vim.lsp.buf.signature_help, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' },
+    { callback = vim.lsp.buf.document_highlight, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' },
+    { callback = vim.lsp.buf.clear_references, buffer = bufnr })
+  vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' },
+    { callback = vim.lsp.buf.signature_help, buffer = bufnr })
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
@@ -597,12 +600,12 @@ local servers = {
   -- rust_analyzer = {},
   -- tsserver = {},
 
-  lua_ls = {
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-    },
-  },
+  --lua_ls = {
+  --  Lua = {
+  --    workspace = { checkThirdParty = false },
+  --    telemetry = { enable = false },
+  --  },
+  -- },
 }
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -640,7 +643,7 @@ mason_lspconfig.setup_handlers {
         --root_dir = mason_lspconfig.util.root_pattern('compile_commands.json', 'compile_flags.txt', '.git'),
         format = {
           style = 'file',
-          fallbackStyle = 'Google',
+          fallbackStyle = 'llvm',
           columnLimit = 100,
           tabWidth = 4,
           indentWidth = 4,
@@ -755,9 +758,9 @@ null_ls.setup {
     null_ls.builtins.code_actions.gitsigns,
     -- Formatting ---------------------
     --  brew install shfmt
-    formatting.shfmt,
+    --formatting.shfmt,
     -- StyLua
-    formatting.stylua,
+    --formatting.stylua,
     -- frontend
     formatting.prettier.with {
       -- 只比默认配置少了 markdown
@@ -778,7 +781,7 @@ null_ls.setup {
         'cpp',
       },
       prefer_local = 'node_modules/.bin',
-      args = { '--tab-width', 16 },
+      args = { '--tab-width', '4' },
     },
 
     null_ls.builtins.diagnostics.eslint,
@@ -788,7 +791,7 @@ null_ls.setup {
   },
   -- 保存自动格式化
   on_attach = function(client)
-    client.offset_encoding = 'utf-16' -- 可能没有用
+    --client.offset_encoding = 'utf-16' -- 可能没有用
     if client.server_capabilities.documentFormattingProvider then
       local pos = vim.fn.getpos '.'
       vim.cmd 'autocmd BufWritePre <buffer> lua vim.lsp.buf.format({async = false})'
