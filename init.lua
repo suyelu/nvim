@@ -745,7 +745,7 @@ local function get_indentation(lang)
   if lang == 'c' or lang == 'cpp' then
     return 4 -- C 和 C++ 使用 4 个空格缩进
   elseif lang == 'python' then
-    return 2 -- Python 使用 2 个空格缩进
+    return 4 -- Python 使用 2 个空格缩进
   else
     return 8 -- 默认使用 2 个空格缩进
   end
@@ -758,31 +758,31 @@ null_ls.setup {
     null_ls.builtins.code_actions.gitsigns,
     -- Formatting ---------------------
     --  brew install shfmt
-    --formatting.shfmt,
+    formatting.shfmt,
     -- StyLua
     --formatting.stylua,
     -- frontend
-    formatting.prettier.with {
+    --formatting.prettier.with {
       -- 只比默认配置少了 markdown
-      filetypes = {
-        'javascript',
-        'javascriptreact',
-        'typescript',
-        'typescriptreact',
-        'vue',
-        'css',
-        'scss',
-        'less',
-        'html',
-        'json',
-        'yaml',
-        'graphql',
-        'c',
-        'cpp',
-      },
-      prefer_local = 'node_modules/.bin',
-      args = { '--tab-width', '4' },
-    },
+     -- filetypes = {
+     --   'javascript',
+     --   'javascriptreact',
+     --   'typescript',
+     --   'typescriptreact',
+     --   'vue',
+      --  'css',
+      --  'scss',
+      --  'less',
+      --  'html',
+      --  'json',
+      --  'yaml',
+      --  'graphql',
+      --  'c',
+      --  'cpp',
+     -- },
+     -- prefer_local = 'node_modules/.bin',
+     -- args = { '--tab-width', '4' },
+   -- },
 
     null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.completion.spell,
