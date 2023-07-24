@@ -41,7 +41,7 @@ require('lazy').setup({
   'https://gitee.com/suyelu/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
-  'https://gitee.com/suyelu/vim-sleuth',
+  --'https://gitee.com/suyelu/vim-sleuth',
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -91,6 +91,8 @@ require('lazy').setup({
       { '<leader>f', '<Cmd>HopWordCurrentLine<CR>', mode = 'n', silent = true },
     },
   },
+-- 屏保
+  {string.format('%s/cellular-automaton.nvim', base_url)},
   -- Useful plugin to show you pending keybinds.
   { string.format('%s/which-key.nvim', base_url), opts = {} },
   {
@@ -327,6 +329,7 @@ vim.o.showmode = false
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
+vim.keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -596,16 +599,16 @@ end
 local servers = {
   clangd = {},
   -- gopls = {},
-  -- pyright = {},
+   pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
 
-  --lua_ls = {
-  --  Lua = {
-  --    workspace = { checkThirdParty = false },
-  --    telemetry = { enable = false },
-  --  },
-  -- },
+  lua_ls = {
+    Lua = {
+      workspace = { checkThirdParty = false },
+      telemetry = { enable = false },
+    },
+   },
 }
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -752,6 +755,10 @@ local function get_indentation(lang)
 end
 local current_filetype = vim.bo.filetype
 local indent = get_indentation(current_filetype)
+local format_opts = {
+    tabWidth = 4,
+    insertSpaces = true,
+}
 null_ls.setup {
   debug = true,
   sources = {
@@ -760,29 +767,29 @@ null_ls.setup {
     --  brew install shfmt
     formatting.shfmt,
     -- StyLua
-    --formatting.stylua,
+    formatting.stylua,
     -- frontend
-    --formatting.prettier.with {
+    formatting.prettier.with {
       -- 只比默认配置少了 markdown
-     -- filetypes = {
-     --   'javascript',
-     --   'javascriptreact',
-     --   'typescript',
-     --   'typescriptreact',
-     --   'vue',
-      --  'css',
-      --  'scss',
-      --  'less',
-      --  'html',
-      --  'json',
-      --  'yaml',
-      --  'graphql',
-      --  'c',
-      --  'cpp',
-     -- },
-     -- prefer_local = 'node_modules/.bin',
-     -- args = { '--tab-width', '4' },
-   -- },
+      filetypes = {
+        'javascript',
+        'javascriptreact',
+        'typescript',
+        'typescriptreact',
+        'vue',
+        'css',
+        'scss',
+        'less',
+        'html',
+        'json',
+        'yaml',
+        'graphql',
+        'c',
+        'cpp',
+      },
+      prefer_local = 'node_modules/.bin',
+      args = { '--tab-width', '4' },
+    },
 
     null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.completion.spell,
@@ -794,7 +801,7 @@ null_ls.setup {
     --client.offset_encoding = 'utf-16' -- 可能没有用
     if client.server_capabilities.documentFormattingProvider then
       local pos = vim.fn.getpos '.'
-      vim.cmd 'autocmd BufWritePre <buffer> lua vim.lsp.buf.format({async = false})'
+      --vim.cmd 'autocmd BufWritePre <buffer> lua vim.lsp.buf.format(format_opts)'
       vim.fn.setpos('.', pos)
     end
   end,
@@ -848,11 +855,11 @@ func SetTitle()
 endif
  if &filetype == "cc"
      call append(line(".")+7, "#include <iostream>")
-     call append(line(".")+8, "using namespace std;")  endif
+     call append(line(".")+8, "using namespace std;")
   endif
  if &filetype == "cpp"
      call append(line(".")+7, "#include <iostream>")
-     call append(line(".")+8, "using namespace std;")  endif
+     call append(line(".")+8, "using namespace std;")
   endif
 endfunc
     "新建文件后，自动定位到文件末尾
