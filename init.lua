@@ -371,7 +371,7 @@ map('n', '<C-Up>', ':resize -2<CR>', opt)
 -- 大括号补全
 map('i', '{<CR>', '{<CR>}<ESC>O', opt)
 -- 圆括号补全
-map('i', '(', '()<LEFT>', opt)
+--map('i', '(', '()<LEFT>', opt)
 
 require('hop').setup()
 
