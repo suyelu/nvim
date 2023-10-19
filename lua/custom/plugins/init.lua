@@ -163,7 +163,7 @@ require('nvim-tree').setup {
     -- 也可以 'right'
     side = 'left',
     -- 隐藏根目录
-    hide_root_folder = false,
+    --hide_root_folder = false,
     -- 自定义列表中快捷键
     --mappings = {
     --  custom_only = false,
